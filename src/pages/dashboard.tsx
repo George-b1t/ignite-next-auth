@@ -17,7 +17,7 @@ export default function Dashboard() {
     <>
       <h1>Email: {user?.email}</h1>
 
-      <button onClick={signOut}>Sign out</button>
+      <button onClick={() => signOut()}>Sign out</button>
 
       <Can permissions={['metrics.list']} roles={['editor', 'administrator']}>
         <div>Métricas</div>

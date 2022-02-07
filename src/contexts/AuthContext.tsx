@@ -53,6 +53,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         case 'signOut':
           signOut(true);
           break;
+        case 'signIn':
+          Router.reload();
+          break;
         default:
           break;
       };
@@ -77,7 +80,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
   }, []);
 
-  async function signIn({ email, password }: SignInCredentials) {
+  async function signIn({ email, password }: SignInCredentials, firstSignin: boolean = false) {
     try {
       const response = await api.post('sessions', {
         email,
@@ -110,6 +113,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api.defaults.headers['Authorization'] = `Bearer ${token}`;
 
       Router.push('/dashboard');
+
+      if ( !firstSignin ) {
+        authChannel.postMessage('signIn');
+      };
     } catch (err) {
       console.log(err);
     };
